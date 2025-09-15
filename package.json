@@ -1,0 +1,30 @@
+{
+  "name": "cms-poc",
+  "version": "1.0.0",
+  "description": "Headless CMS POC with Next.js and TinaCMS",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export",
+    "tinacms": "tinacms dev -c \"npm run dev\"",
+    "tinacms:build": "tinacms build",
+    "deploy": "npm run build && touch out/.nojekyll && echo 'cms-poc.github.io' > out/CNAME"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tinacms/cli": "^1.10.3",
+    "@tinacms/datalayer": "^1.4.1",
+    "@types/node": "^24.4.0",
+    "@types/react": "^19.1.13",
+    "gray-matter": "^4.0.3",
+    "next": "^15.5.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tinacms": "^2.8.3",
+    "typescript": "^5.9.2"
+  }
+}
