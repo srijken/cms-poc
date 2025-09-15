@@ -25,11 +25,11 @@ const nextConfig = {
               key: 'Content-Security-Policy',
               value: [
                 "default-src 'self'",
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Required for TinaCMS
-                "style-src 'self' 'unsafe-inline'",
-                "img-src 'self' data: blob:",
-                "font-src 'self'",
-                "connect-src 'self' ws: wss:", // Allow WebSocket connections for TinaCMS
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:4001 https://localhost:4001", // Required for TinaCMS and admin interface
+                "style-src 'self' 'unsafe-inline' http://localhost:4001 https://localhost:4001",
+                "img-src 'self' data: blob: http://localhost:4001 https://localhost:4001",
+                "font-src 'self' http://localhost:4001 https://localhost:4001",
+                "connect-src 'self' ws: wss: http://localhost:4001 https://localhost:4001 ws://localhost:4001 wss://localhost:4001", // Allow WebSocket connections for TinaCMS
                 "media-src 'self'",
                 "object-src 'none'",
                 "base-uri 'self'",
