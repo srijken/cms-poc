@@ -9,7 +9,7 @@ export interface ContentData {
   title: string;
   description?: string;
   date?: string;
-  content: string;
+  content: string | any; // Can be markdown string or TinaCMS rich-text object
   [key: string]: any;
 }
 
@@ -25,9 +25,17 @@ export function getContentBySlug(type: 'pages' | 'posts', slug: string): Content
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
     
+    // Try to parse content as JSON for TinaCMS rich-text, fallback to string
+    let parsedContent;
+    try {
+      parsedContent = JSON.parse(content);
+    } catch {
+      parsedContent = content; // Keep as markdown string
+    }
+    
     return {
       slug: realSlug,
-      content,
+      content: parsedContent,
       ...data,
     } as ContentData;
   } catch (error) {

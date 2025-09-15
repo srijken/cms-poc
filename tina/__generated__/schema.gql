@@ -106,16 +106,46 @@ input StringFilter {
   in: [String]
 }
 
+input ImageFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input PageBodyImageCarouselImagesFilter {
+  src: ImageFilter
+  alt: StringFilter
+  caption: StringFilter
+}
+
+input PageBodyImageCarouselFilter {
+  title: StringFilter
+  images: PageBodyImageCarouselImagesFilter
+}
+
 input RichTextFilter {
   startsWith: String
   eq: String
   exists: Boolean
 }
 
+input PageBodyQuoteFilter {
+  content: RichTextFilter
+  author: StringFilter
+  role: StringFilter
+  source: StringFilter
+}
+
+input PageBodyFilter {
+  imageCarousel: PageBodyImageCarouselFilter
+  quote: PageBodyQuoteFilter
+}
+
 input PageFilter {
   title: StringFilter
   description: StringFilter
-  body: RichTextFilter
+  body: PageBodyFilter
 }
 
 type PageConnectionEdges {
@@ -147,11 +177,34 @@ input DatetimeFilter {
   in: [String]
 }
 
+input PostBodyImageCarouselImagesFilter {
+  src: ImageFilter
+  alt: StringFilter
+  caption: StringFilter
+}
+
+input PostBodyImageCarouselFilter {
+  title: StringFilter
+  images: PostBodyImageCarouselImagesFilter
+}
+
+input PostBodyQuoteFilter {
+  content: RichTextFilter
+  author: StringFilter
+  role: StringFilter
+  source: StringFilter
+}
+
+input PostBodyFilter {
+  imageCarousel: PostBodyImageCarouselFilter
+  quote: PostBodyQuoteFilter
+}
+
 input PostFilter {
   title: StringFilter
   description: StringFilter
   date: DatetimeFilter
-  body: RichTextFilter
+  body: PostBodyFilter
 }
 
 type PostConnectionEdges {
