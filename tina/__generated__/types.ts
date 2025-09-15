@@ -200,16 +200,46 @@ export type StringFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type ImageFilter = {
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+  eq?: InputMaybe<Scalars['String']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type PageBodyImageCarouselImagesFilter = {
+  src?: InputMaybe<ImageFilter>;
+  alt?: InputMaybe<StringFilter>;
+  caption?: InputMaybe<StringFilter>;
+};
+
+export type PageBodyImageCarouselFilter = {
+  title?: InputMaybe<StringFilter>;
+  images?: InputMaybe<PageBodyImageCarouselImagesFilter>;
+};
+
 export type RichTextFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
   eq?: InputMaybe<Scalars['String']['input']>;
   exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type PageBodyQuoteFilter = {
+  content?: InputMaybe<RichTextFilter>;
+  author?: InputMaybe<StringFilter>;
+  role?: InputMaybe<StringFilter>;
+  source?: InputMaybe<StringFilter>;
+};
+
+export type PageBodyFilter = {
+  imageCarousel?: InputMaybe<PageBodyImageCarouselFilter>;
+  quote?: InputMaybe<PageBodyQuoteFilter>;
+};
+
 export type PageFilter = {
   title?: InputMaybe<StringFilter>;
   description?: InputMaybe<StringFilter>;
-  body?: InputMaybe<RichTextFilter>;
+  body?: InputMaybe<PageBodyFilter>;
 };
 
 export type PageConnectionEdges = {
@@ -244,11 +274,34 @@ export type DatetimeFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type PostBodyImageCarouselImagesFilter = {
+  src?: InputMaybe<ImageFilter>;
+  alt?: InputMaybe<StringFilter>;
+  caption?: InputMaybe<StringFilter>;
+};
+
+export type PostBodyImageCarouselFilter = {
+  title?: InputMaybe<StringFilter>;
+  images?: InputMaybe<PostBodyImageCarouselImagesFilter>;
+};
+
+export type PostBodyQuoteFilter = {
+  content?: InputMaybe<RichTextFilter>;
+  author?: InputMaybe<StringFilter>;
+  role?: InputMaybe<StringFilter>;
+  source?: InputMaybe<StringFilter>;
+};
+
+export type PostBodyFilter = {
+  imageCarousel?: InputMaybe<PostBodyImageCarouselFilter>;
+  quote?: InputMaybe<PostBodyQuoteFilter>;
+};
+
 export type PostFilter = {
   title?: InputMaybe<StringFilter>;
   description?: InputMaybe<StringFilter>;
   date?: InputMaybe<DatetimeFilter>;
-  body?: InputMaybe<RichTextFilter>;
+  body?: InputMaybe<PostBodyFilter>;
 };
 
 export type PostConnectionEdges = {
