@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface QuoteProps {
   content: any; // TinaCMS rich-text content
   author?: string;

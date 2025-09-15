@@ -1,13 +1,25 @@
+import React from 'react';
 import ImageCarousel from './blocks/ImageCarousel';
 import Quote from './blocks/Quote';
 
 interface TinaContentProps {
-  content: any; // TinaCMS rich-text content with templates
+  content: any; // TinaCMS rich-text content with templates or markdown string
 }
 
 export default function TinaContent({ content }: TinaContentProps) {
   if (!content) {
     return null;
+  }
+
+  // Handle legacy markdown content
+  if (typeof content === 'string') {
+    return (
+      <div className="prose prose-lg max-w-none">
+        <div 
+          dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(content) }}
+        />
+      </div>
+    );
   }
 
   // Handle TinaCMS rich-text structure
@@ -26,9 +38,9 @@ export default function TinaContent({ content }: TinaContentProps) {
 function renderContent(item: any, index: number): React.ReactNode {
   if (!item) return null;
 
-  // Handle template blocks
-  if (item._template || item.type) {
-    const template = item._template || item.type;
+  // Handle template blocks (custom blocks)
+  if (item._template) {
+    const template = item._template;
     
     switch (template) {
       case 'imageCarousel':
@@ -155,7 +167,15 @@ function renderContent(item: any, index: number): React.ReactNode {
         return item.text || '';
       
       default:
-        console.warn(`Unknown content type: ${item.type}`);
+        // Don't warn for standard HTML elements, just render them generically
+        if (item.children && Array.isArray(item.children)) {
+          const Tag = item.type as keyof JSX.IntrinsicElements;
+          return React.createElement(Tag, { key: index }, 
+            item.children.map((child: any, childIndex: number) => 
+              renderContent(child, childIndex)
+            )
+          );
+        }
         return null;
     }
   }
@@ -178,4 +198,29 @@ function renderContent(item: any, index: number): React.ReactNode {
   }
 
   return null;
+}
+
+// Simple markdown to HTML converter for basic formatting (legacy support)
+function convertMarkdownToHtml(markdown: string): string {
+  return markdown
+    // Headers
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    // Bold and italic
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    // Lists
+    .replace(/^\- (.*$)/gim, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+    // Code blocks
+    .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    // Line breaks
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(?!<[h|u|p|l])(.+)$/gm, '<p>$1</p>')
+    // Clean up
+    .replace(/<p><\/p>/g, '')
+    .replace(/<p>(<h[1-6]>)/g, '$1')
+    .replace(/(<\/h[1-6]>)<\/p>/g, '$1');
 }
