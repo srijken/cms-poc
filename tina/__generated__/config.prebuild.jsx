@@ -2,7 +2,7 @@
 import { defineConfig } from "tinacms";
 var config_default = defineConfig({
   branch: "main",
-  // Local-only configuration - no cloud needed
+  // Local development - use git provider with filesystem
   clientId: null,
   token: null,
   build: {
