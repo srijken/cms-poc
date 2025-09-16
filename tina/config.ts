@@ -4,8 +4,8 @@ export default defineConfig({
   branch: "main",
   
   // Local development - use git provider with filesystem
-  clientId: null,
-  token: null,
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+  token: process.env.TINA_TOKEN,
   
   build: {
     outputFolder: "admin",
